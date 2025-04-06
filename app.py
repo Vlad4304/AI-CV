@@ -8,17 +8,23 @@ from werkzeug.utils import secure_filename
 import tempfile
 import json
 from resume_parser import parse_resume_file, parse_resume_text
-from ai_analyzer import analyze_resume, generate_anschreiben, score_resume
+from ai_analyzer import analyze_resume, generate_anschreiben
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, 
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     stream=sys.stdout)
 
-# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "default-secret-key")
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+# Fix: Add root route
+@app.route("/")
+def home():
+    return "AIAI is running! Use /analyze for resume processing."
+
+# ... (остальной код оставляем без изменений)
 
 # Store session data in files instead of cookies to handle larger data
 from flask_session import Session
